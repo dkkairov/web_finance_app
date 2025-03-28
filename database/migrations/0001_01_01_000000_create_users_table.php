@@ -13,12 +13,16 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
+            $table->string('name'); // Имя пользователя
+            $table->string('email')->unique(); // Email (уникальный)
+            $table->string('password'); // Пароль
+            $table->string('language')->default('en'); // Язык пользователя (по умолчанию "en")
+            $table->foreignId('preferred_currency_id')->nullable()->constrained('currencies')->nullOnDelete(); // Предпочитаемая валюта
+            $table->boolean('is_active')->default(true); // Активность пользователя
+            $table->timestamp('email_verified_at')->nullable(); // Подтверждение email
+            $table->rememberToken(); // Токен для "запомнить меня"
             $table->timestamps();
+            $table->softDeletes(); // Мягкое удаление
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
