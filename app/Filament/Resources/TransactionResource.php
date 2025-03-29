@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\UserResource\Pages;
-use App\Filament\Resources\UserResource\RelationManagers;
-use App\Models\User;
+use App\Filament\Resources\TransactionResource\Pages;
+use App\Filament\Resources\TransactionResource\RelationManagers;
+use App\Models\Transaction;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,9 +13,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class UserResource extends Resource
+class TransactionResource extends Resource
 {
-    protected static ?string $model = User::class;
+    protected static ?string $model = Transaction::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -23,31 +23,27 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
+                Forms\Components\TextInput::make('user_id')
                     ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('email')
-                    ->email()
+                    ->numeric(),
+                Forms\Components\TextInput::make('transaction_type')
+                    ->required(),
+                Forms\Components\TextInput::make('amount')
                     ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('password')
-                    ->password()
+                    ->numeric(),
+                Forms\Components\TextInput::make('transaction_category_id')
+                    ->numeric(),
+                Forms\Components\TextInput::make('account_id')
                     ->required()
-                    ->maxLength(255),
-                Forms\Components\Textarea::make('two_factor_secret')
+                    ->numeric(),
+                Forms\Components\TextInput::make('project_id')
+                    ->numeric(),
+                Forms\Components\Textarea::make('description')
                     ->columnSpanFull(),
-                Forms\Components\Textarea::make('two_factor_recovery_codes')
-                    ->columnSpanFull(),
-                Forms\Components\DateTimePicker::make('two_factor_confirmed_at'),
-                Forms\Components\TextInput::make('language')
-                    ->required()
-                    ->maxLength(255)
-                    ->default('en'),
-                Forms\Components\Select::make('preferred_currency_id')
-                    ->relationship('preferredCurrency', 'name'),
+                Forms\Components\DateTimePicker::make('date')
+                    ->required(),
                 Forms\Components\Toggle::make('is_active')
                     ->required(),
-                Forms\Components\DateTimePicker::make('email_verified_at'),
             ]);
     }
 
@@ -55,18 +51,27 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('email')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('language')
-                    ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\IconColumn::make('is_active')
-                    ->boolean(),
-                Tables\Columns\TextColumn::make('email_verified_at')
+                Tables\Columns\TextColumn::make('user_id')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('transaction_type'),
+                Tables\Columns\TextColumn::make('amount')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('transaction_category_id')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('account_id')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('project_id')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('date')
                     ->dateTime()
                     ->sortable(),
+                Tables\Columns\IconColumn::make('is_active')
+                    ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -105,9 +110,9 @@ class UserResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListUsers::route('/'),
-            'create' => Pages\CreateUser::route('/create'),
-            'edit' => Pages\EditUser::route('/{record}/edit'),
+            'index' => Pages\ListTransactions::route('/'),
+            'create' => Pages\CreateTransaction::route('/create'),
+            'edit' => Pages\EditTransaction::route('/{record}/edit'),
         ];
     }
 

@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\UserResource\Pages;
-use App\Filament\Resources\UserResource\RelationManagers;
-use App\Models\User;
+use App\Filament\Resources\AccountResource\Pages;
+use App\Filament\Resources\AccountResource\RelationManagers;
+use App\Models\Account;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,9 +13,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class UserResource extends Resource
+class AccountResource extends Resource
 {
-    protected static ?string $model = User::class;
+    protected static ?string $model = Account::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -23,31 +23,21 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\TextInput::make('workspace_id')
+                    ->required()
+                    ->numeric(),
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('email')
-                    ->email()
+                Forms\Components\TextInput::make('balance')
                     ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('password')
-                    ->password()
+                    ->numeric()
+                    ->default(0.00),
+                Forms\Components\TextInput::make('currency_id')
                     ->required()
-                    ->maxLength(255),
-                Forms\Components\Textarea::make('two_factor_secret')
-                    ->columnSpanFull(),
-                Forms\Components\Textarea::make('two_factor_recovery_codes')
-                    ->columnSpanFull(),
-                Forms\Components\DateTimePicker::make('two_factor_confirmed_at'),
-                Forms\Components\TextInput::make('language')
-                    ->required()
-                    ->maxLength(255)
-                    ->default('en'),
-                Forms\Components\Select::make('preferred_currency_id')
-                    ->relationship('preferredCurrency', 'name'),
+                    ->numeric(),
                 Forms\Components\Toggle::make('is_active')
                     ->required(),
-                Forms\Components\DateTimePicker::make('email_verified_at'),
             ]);
     }
 
@@ -55,18 +45,19 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('workspace_id')
+                    ->numeric()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('email')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('language')
-                    ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('balance')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('currency_id')
+                    ->numeric()
+                    ->sortable(),
                 Tables\Columns\IconColumn::make('is_active')
                     ->boolean(),
-                Tables\Columns\TextColumn::make('email_verified_at')
-                    ->dateTime()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -105,9 +96,9 @@ class UserResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListUsers::route('/'),
-            'create' => Pages\CreateUser::route('/create'),
-            'edit' => Pages\EditUser::route('/{record}/edit'),
+            'index' => Pages\ListAccounts::route('/'),
+            'create' => Pages\CreateAccount::route('/create'),
+            'edit' => Pages\EditAccount::route('/{record}/edit'),
         ];
     }
 
