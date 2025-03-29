@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
@@ -88,13 +89,13 @@ class User extends Authenticatable implements FilamentUser
     /**
      * Get the user's initials
      */
-//    public function initials(): string
-//    {
-//        return Str::of($this->name)
-//            ->explode(' ')
-//            ->map(fn (string $name) => Str::of($name)->substr(0, 1))
-//            ->implode('');
-//    }
+    public function initials(): string
+    {
+        return Str::of($this->name)
+            ->explode(' ')
+            ->map(fn (string $name) => Str::of($name)->substr(0, 1))
+            ->implode('');
+    }
 
     public function canAccessPanel(Panel $panel): bool
     {
