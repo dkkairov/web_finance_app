@@ -3,30 +3,29 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreTransactionRequest;
-use App\Http\Requests\UpdateTransactionRequest;
+use App\Http\Requests\Transaction\StoreTransactionRequest;
+use App\Http\Requests\Transaction\UpdateTransactionRequest;
+use App\Http\Resources\TransactionResource;
 use App\Models\Transaction;
-use Illuminate\Http\Request;
 
 class TransactionController extends Controller
 {
     public function index()
     {
         $transactions = Transaction::where('user_id', auth()->id())->get();
-        return response()->json($transactions);
+
+        return TransactionResource::collection($transactions);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreTransactionRequest $request)
     {
+//        return response()->json(['error' => 'error'], 403);
         $data = $request->validated();
         $data['user_id'] = auth()->id();
-        Transaction::create($data);
-        return response()->json([
-            'message' => 'Transaction created successfully.'
-        ], 201);
+        $transaction = Transaction::create($data); // Сохраняем созданную модель
+        return (new TransactionResource($transaction)) // Возвращаем ресурс
+            ->response()
+            ->setStatusCode(201); // Статус 201 Created
 
     }
 
@@ -35,7 +34,8 @@ class TransactionController extends Controller
         if ($transaction->user_id !== auth()->id()) {
             return response()->json(['error' => 'Unauthorized'], 403);
         }
-        return response()->json($transaction, 200);
+
+        return new TransactionResource($transaction); // Используем ресурс
     }
 
     public function update(UpdateTransactionRequest $request, Transaction $transaction)
@@ -44,7 +44,7 @@ class TransactionController extends Controller
             return response()->json(['error' => 'Unauthorized'], 403);
         }
         $transaction->update($request->validated());
-        return response()->json($transaction, 200);
+        return new TransactionResource($transaction->fresh()); // Используем ресурс (fresh() чтобы получить обновленные данные, если нужно)
     }
 
     public function destroy(Transaction $transaction)

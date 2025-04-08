@@ -13,7 +13,6 @@ class Account extends Model
     use HasFactory, SoftDeletes, LogsActivity;
 
     protected $fillable = [
-        'user_id',
         'workspace_id',
         'name',
         'balance',
@@ -23,12 +22,8 @@ class Account extends Model
 
     protected $casts = [
         'is_active' => 'boolean',
+        'balance' => 'decimal:2'
     ];
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
 
     public function workspace()
     {

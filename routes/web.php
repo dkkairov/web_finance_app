@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Route;
 
 // MAIN
 //Route::post('/auth/logout', [AuthController::class, 'destroy'])->name('filament.admin.auth.logout');
+Route::redirect('/', '/')->name('home');
 
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');
