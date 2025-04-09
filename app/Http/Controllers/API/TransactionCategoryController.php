@@ -17,7 +17,8 @@ class TransactionCategoryController extends Controller
     public function index()
     {
         // Если категории глобальные, убери ->where(...)
-        $categories = TransactionCategory::where('user_id', auth()->id())->get();
+
+        $categories = TransactionCategory::where('transaction_categories.user_id', auth()->id())->get();
 
         return TransactionCategoryResource::collection($categories);
     }

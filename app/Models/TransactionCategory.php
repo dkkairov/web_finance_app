@@ -12,7 +12,7 @@ class TransactionCategory extends Model
 {
     use HasFactory, SoftDeletes, LogsActivity;
 
-    protected $fillable = ['name', 'user_id'];
+    protected $fillable = ['name', 'user_id', 'type', 'icon'];
 
     /**
      * Конфигурация логирования
