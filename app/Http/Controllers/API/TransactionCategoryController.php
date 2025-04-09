@@ -86,6 +86,6 @@ class TransactionCategoryController extends Controller
 
         $transactionCategory->delete(); // Используется SoftDeletes
 
-        return response()->noContent();
+        return response()->json(['message' => 'Transaction category deleted successfully'], 200);
     }
 }

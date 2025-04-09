@@ -13,6 +13,7 @@ return new class extends Migration {
             $table->string('slug')->unique(); // Должно быть!
             $table->foreignId('owner_id')->constrained('users')->cascadeOnDelete(); // Важно!
             $table->boolean('is_active')->default(true); // Активность
+            $table->string('type')->nullable()->default('personal');
             $table->timestamps();
             $table->softDeletes();
 

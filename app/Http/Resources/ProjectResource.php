@@ -16,10 +16,10 @@ class ProjectResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'workspace_id' => (int) $this->workspace_id,
+            'workspaceId' => (int) $this->workspace_id,
             'name' => $this->name,
             'description' => $this->description,
-            'is_active' => (bool) $this->is_active,
+            'isActive' => (bool) $this->is_active,
             // Можно добавить связанные данные
             // 'workspace' => new WorkspaceResource($this->whenLoaded('workspace')),
         ];

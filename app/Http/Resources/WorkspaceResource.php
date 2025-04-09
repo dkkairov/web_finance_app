@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Filament\Resources\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -20,7 +21,7 @@ class WorkspaceResource extends JsonResource
             'slug' => $this->slug,
             'isActive' => (bool) $this->is_active,
             // Информация о владельце (если связь 'owner' загружена)
-            // 'owner' => new UserResource($this->whenLoaded('owner') ? $this->owner->user : null), // Пример, если есть UserResource
+//            'owner' => new UserResource($this->whenLoaded('owner') ? $this->owner->user : null), // Пример, если есть UserResource
             'ownerId' => $this->whenLoaded('owner', function() { // Пример получения ID владельца
                 // Убедись, что связь owner загружена и у membership есть user_id
                 return $this->owner ? $this->owner->user_id : null;
@@ -30,6 +31,7 @@ class WorkspaceResource extends JsonResource
             //      $membership = $this->users()->where('user_id', Auth::id())->first();
             //      return $membership ? $membership->pivot->role : null;
             // }),
+            'type' => $this->type,
             'createdAt' => $this->created_at, // Пример добавления дат
             'updatedAt' => $this->updated_at,
         ];

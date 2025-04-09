@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\AccountController;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\CurrencyController;
 use App\Http\Controllers\API\ProjectController;
 use App\Http\Controllers\API\TransactionCategoryController;
 use App\Http\Controllers\API\TransactionController;
@@ -22,37 +23,24 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
     //Transaction
-    Route::get('/transactions', [TransactionController::class, 'index']);
-    Route::post('/transactions', [TransactionController::class, 'store']);
-    Route::get('/transactions/{transaction}', [TransactionController::class, 'show']);
-    Route::put('/transactions/{transaction}', [TransactionController::class, 'update']);
-    Route::delete('/transactions/{transaction}', [TransactionController::class, 'destroy']);
+    Route::apiResource('transactions', TransactionController::class);
 
     //Account
-    Route::get('/accounts', [AccountController::class, 'index']);
-    Route::post('/accounts', [AccountController::class, 'store']);
-    Route::get('/accounts/{account}', [AccountController::class, 'show']);
-    Route::put('/accounts/{account}', [AccountController::class, 'update']);
-    Route::delete('/accounts/{account}', [AccountController::class, 'destroy']);
+    Route::apiResource('accounts', AccountController::class);
 
     // TransactionCategory CRUD routes (используем kebab-case для URL)
-    Route::get('/transaction-categories', [TransactionCategoryController::class, 'index']);
-    Route::post('/transaction-categories', [TransactionCategoryController::class, 'store']);
-    Route::get('/transaction-categories/{transaction_category}', [TransactionCategoryController::class, 'show']); // Route Model Binding
-    Route::put('/transaction-categories/{transaction_category}', [TransactionCategoryController::class, 'update']); // Route Model Binding
-    Route::delete('/transaction-categories/{transaction_category}', [TransactionCategoryController::class, 'destroy']); // Route Model Binding
+    Route::apiResource('transaction-categories', TransactionCategoryController::class);
 
     // Project CRUD routes
-    Route::get('/projects', [ProjectController::class, 'index']);
-    Route::post('/projects', [ProjectController::class, 'store']);
-    Route::get('/projects/{project}', [ProjectController::class, 'show']);       // Route Model Binding
-    Route::put('/projects/{project}', [ProjectController::class, 'update']);       // Route Model Binding
-    Route::delete('/projects/{project}', [ProjectController::class, 'destroy']);     // Route Model Binding
+    Route::apiResource('projects', ProjectController::class);
 
     // Workspace CRUD routes
-    Route::get('/workspaces', [WorkspaceController::class, 'index']);
-    Route::post('/workspaces', [WorkspaceController::class, 'store']);
-    Route::get('/workspaces/{workspace}', [WorkspaceController::class, 'show']);    // Route Model Binding
-    Route::put('/workspaces/{workspace}', [WorkspaceController::class, 'update']);    // Route Model Binding
-    Route::delete('/workspaces/{workspace}', [WorkspaceController::class, 'destroy']);  // Route Model Binding
+    Route::apiResource('workspaces', WorkspaceController::class);
+
+    // Currency CRUD routes
+    Route::get('/currencies', [CurrencyController::class, 'index']);
+    Route::post('/currencies', [CurrencyController::class, 'store']);
+    Route::get('/currencies/{currency}', [CurrencyController::class, 'show']);    // Route Model Binding
+    Route::put('/currencies/{currency}', [CurrencyController::class, 'update']);    // Route Model Binding
+    Route::delete('/currencies/{currency}', [CurrencyController::class, 'destroy']);  // Route Model Binding
 });

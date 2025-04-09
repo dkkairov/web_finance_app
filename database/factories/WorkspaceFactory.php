@@ -19,6 +19,7 @@ class WorkspaceFactory extends Factory
             'name' => $name,
             'slug' => Str::slug($name), // Генерируем slug
             'owner_id' => User::inRandomOrder()->first()?->id ?? User::factory()->create()->id, // Создаем владельца (обязательно!)
+            'type' => 'personal',
             'created_at' => now(),
             'updated_at' => now(),
         ];

@@ -12,11 +12,15 @@ class Workspace extends Model
 {
     use HasFactory, SoftDeletes, LogsActivity;
 
+    public const TYPE_PERSONAL = 'personal';
+    public const TYPE_BUSINESS = 'business';
+
     protected $fillable = [
         'name',
         'slug',
         'owner_id',
         'is_active',
+        'type', // Добавили 'type'
     ];
 
     protected $casts = [

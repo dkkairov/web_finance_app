@@ -11,7 +11,10 @@ use App\Models\Membership; // <-- Предполагаем, что модель 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB; // <-- Для транзакции в store
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+
+// <-- Для транзакции в store
 
 class WorkspaceController extends Controller
 {
@@ -44,8 +47,9 @@ class WorkspaceController extends Controller
             $workspace = Workspace::create([
                 'name' => $validatedData['name'],
                 'slug' => $validatedData['slug'], // Убедись, что slug генерируется или валидируется
+                'type' => $validatedData['type'],
                 'is_active' => $validatedData['is_active'] ?? true,
-                // 'owner_id' => $user->id, // Раскомментируй, если поле owner_id нужно и должно быть заполнено
+                'owner_id' => $user->id, // Раскомментируй, если поле owner_id нужно и должно быть заполнено
             ]);
 
             // 2. Создаем запись о членстве для создателя как владельца
@@ -68,8 +72,8 @@ class WorkspaceController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             // Логируем ошибку
-            \Log::error('Workspace creation failed: ' . $e->getMessage());
-            return response()->json(['error' => 'Failed to create workspace.'], Response::HTTP_INTERNAL_SERVER_ERROR);
+            Log::error('Workspace creation failed: ' . $e->getMessage());
+            return response()->json(['error' => 'Failed to create workspace. Error: '.$e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -79,7 +83,7 @@ class WorkspaceController extends Controller
     public function show(Workspace $workspace) // Route Model Binding
     {
         // Проверка, является ли пользователь членом этого воркспейса
-        if (!Auth::user()->workspaces()->where('id', $workspace->id)->exists()) {
+        if (!Auth::user()->workspaces()->where('workspaces.id', $workspace->id)->exists()) {
             return response()->json(['error' => 'Access denied'], Response::HTTP_FORBIDDEN);
         }
         // Можно загрузить доп. связи, если они нужны в ресурсе
@@ -91,13 +95,11 @@ class WorkspaceController extends Controller
     /**
      * Update the specified workspace in storage if the user is the owner.
      */
-    public function update(UpdateWorkspaceRequest $request, Workspace $workspace) // Route Model Binding
+    public function update(UpdateWorkspaceRequest $request, Workspace $workspace)
     {
-        // Проверка, является ли пользователь владельцем воркспейса
-        // Замени 'owner' на актуальное значение роли, если оно другое
-        $isOwner = Membership::where('workspace_id', $workspace->id)
-            ->where('user_id', Auth::id())
-            ->where('role', 'owner')
+        $isOwner = Membership::where('memberships.workspace_id', $workspace->id)
+            ->where('memberships.user_id', Auth::id())
+            ->where('memberships.role', 'owner')
             ->exists();
 
         if (!$isOwner) {
@@ -107,7 +109,7 @@ class WorkspaceController extends Controller
         $workspace->update($request->validated());
         $workspace->load('owner.user');
 
-        return new WorkspaceResource($workspace->fresh()->load('owner.user')); // fresh() + load()
+        return new WorkspaceResource($workspace->fresh()->load('owner.user'));
     }
 
     /**
@@ -136,6 +138,6 @@ class WorkspaceController extends Controller
         $workspace->delete(); // Используется SoftDeletes
         // });
 
-        return response()->noContent();
+        return response()->json(['message' => 'Workspace deleted successfully'], 200);
     }
 }

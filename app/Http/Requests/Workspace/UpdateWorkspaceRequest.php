@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Workspace;
 
+use App\Models\Workspace;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -23,7 +24,7 @@ class UpdateWorkspaceRequest extends FormRequest
      */
     public function rules(): array
     {
-        $workspaceId = $this->route('workspace')->id;
+        $workspaceId = $this->route('workspace'); // Получаем строковое значение ID из маршрута
 
         return [
             'name' => [
@@ -31,18 +32,17 @@ class UpdateWorkspaceRequest extends FormRequest
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('workspaces', 'name')->ignore($workspaceId), // Уникальное имя, игнорируя текущий воркспейс
             ],
-            // Slug обычно не меняют, но если нужно, добавь похожее правило:
-            // 'slug' => [
-            //     'sometimes',
-            //     'required',
-            //     'string',
-            //     'max:255',
-            //     'alpha_dash',
-            //     Rule::unique('workspaces', 'slug')->ignore($workspaceId),
-            // ],
+            'slug' => [
+                'sometimes',
+                'required',
+                'string',
+                'max:255',
+                'alpha_dash',
+            ],
+            'owner_id' => 'sometimes|exists:users,id',
             'is_active' => 'sometimes|boolean',
+            'type' => ['required', 'string', Rule::in([Workspace::TYPE_PERSONAL, Workspace::TYPE_BUSINESS])],
         ];
     }
 }
