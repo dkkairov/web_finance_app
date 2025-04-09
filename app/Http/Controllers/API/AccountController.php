@@ -70,17 +70,17 @@ class AccountController extends Controller
      */
     public function update(UpdateAccountRequest $request, Account $account) // Route Model Binding
     {
-//        $user = Auth::user();
-//
-//        // Проверяем, принадлежит ли рабочее пространство, к которому относится аккаунт, к рабочим пространствам пользователя
-//        if (!$user->workspaces()->where('workspaces.id', $account->workspace_id)->exists()) {
-//            return response()->json(['error' => 'Unauthorized to update this account'], Response::HTTP_FORBIDDEN);
-//        }
+        $user = Auth::user();
+
+        // Проверяем, принадлежит ли рабочее пространство, к которому относится аккаунт, к рабочим пространствам пользователя
+        if (!$user->workspaces()->where('workspaces.id', $account->workspace_id)->exists()) {
+            return response()->json(['error' => 'Unauthorized to update this account'], Response::HTTP_FORBIDDEN);
+        }
 //        dd($request->validated());
         $account->update($request->validated());
 
-        $account->currency_id = 2;
-        $account->save();
+//        $account->currency_id = 2;
+//        $account->save();
         return new AccountResource($account->fresh());
     }
 
@@ -89,7 +89,7 @@ class AccountController extends Controller
      */
     public function destroy(Account $account) // Route Model Binding
     {
-        $user = Auth::user();
+        $user = Auth::user();   
 
         // Проверяем, принадлежит ли рабочее пространство, к которому относится аккаунт, к рабочим пространствам пользователя
         if (!$user->workspaces()->where('workspaces.id', $account->workspace_id)->exists()) {
@@ -98,6 +98,6 @@ class AccountController extends Controller
 
         $account->delete();
 
-        return response()->noContent();
+        return response()->json(['message' => 'Transaction deleted successfully'], 200);
     }
 }
