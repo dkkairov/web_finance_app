@@ -89,7 +89,7 @@ class AccountController extends Controller
      */
     public function destroy(Account $account) // Route Model Binding
     {
-        $user = Auth::user();   
+        $user = Auth::user();
 
         // Проверяем, принадлежит ли рабочее пространство, к которому относится аккаунт, к рабочим пространствам пользователя
         if (!$user->workspaces()->where('workspaces.id', $account->workspace_id)->exists()) {

@@ -9,7 +9,10 @@ use App\Http\Resources\ProjectResource;          // Создадим далее
 use App\Models\Project;
 use Illuminate\Http\Request; // для auth()->user()
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth; // Для типизации Auth::user()
+use Illuminate\Support\Facades\Auth;
+use function PHPUnit\Framework\isEmpty;
+
+// Для типизации Auth::user()
 
 class ProjectController extends Controller
 {
@@ -21,9 +24,12 @@ class ProjectController extends Controller
         $user = Auth::user();
         // Получаем ID воркспейсов, к которым пользователь имеет доступ
         // Замени 'workspaces' на имя реальной связи в модели User, если оно другое
-        $accessibleWorkspaceIds = $user->workspaces()->pluck('id');
+        $accessibleWorkspaceIds = $user->workspaces()->pluck('workspaces.id');
+//        dd($accessibleWorkspaceIds);
 
         $projects = Project::whereIn('workspace_id', $accessibleWorkspaceIds)->get();
+//        $projects = Project::all();
+
 
         return ProjectResource::collection($projects);
     }
@@ -50,7 +56,7 @@ class ProjectController extends Controller
     public function show(Project $project) // Route Model Binding
     {
         // Проверка, имеет ли пользователь доступ к воркспейсу проекта
-        if (!Auth::user()->workspaces()->where('id', $project->workspace_id)->exists()) {
+        if (!Auth::user()->workspaces()->where('workspaces.id', $project->workspace_id)->exists()) {
             return response()->json(['error' => 'Access to this project workspace denied'], Response::HTTP_FORBIDDEN);
         }
 
@@ -63,7 +69,7 @@ class ProjectController extends Controller
     public function update(UpdateProjectRequest $request, Project $project) // Route Model Binding
     {
         // Проверка, имеет ли пользователь доступ к воркспейсу проекта
-        if (!Auth::user()->workspaces()->where('id', $project->workspace_id)->exists()) {
+        if (!Auth::user()->workspaces()->where('workspaces.id', $project->workspace_id)->exists()) {
             return response()->json(['error' => 'Access to this project workspace denied'], Response::HTTP_FORBIDDEN);
         }
 
@@ -79,7 +85,7 @@ class ProjectController extends Controller
     public function destroy(Project $project) // Route Model Binding
     {
         // Проверка, имеет ли пользователь доступ к воркспейсу проекта
-        if (!Auth::user()->workspaces()->where('id', $project->workspace_id)->exists()) {
+        if (!Auth::user()->workspaces()->where('workspaces.id', $project->workspace_id)->exists()) {
             return response()->json(['error' => 'Access to this project workspace denied'], Response::HTTP_FORBIDDEN);
         }
 
@@ -90,6 +96,6 @@ class ProjectController extends Controller
 
         $project->delete(); // Используется SoftDeletes
 
-        return response()->noContent();
+        return response()->json(['message' => 'Transaction deleted successfully'], 200);
     }
 }

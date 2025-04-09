@@ -26,18 +26,13 @@ class StoreProjectRequest extends FormRequest
     public function rules(): array
     {
         // Получаем ID доступных пользователю воркспейсов
-        $userWorkspaceIds = Auth::user()->workspaces()->pluck('id')->toArray();
+        $userWorkspaceIds = Auth::user()->workspaces()->pluck('workspaces.id')->toArray();
 
         return [
             'name' => [
                 'required',
                 'string',
                 'max:255',
-                // Имя должно быть уникально в пределах указанного workspace_id
-                Rule::unique('projects')->where(function ($query) {
-                    // Используем $this->input() т.к. validated() еще не доступен
-                    return $query->where('workspace_id', $this->input('workspace_id'));
-                })
             ],
             'description' => 'nullable|string',
             'workspace_id' => [
