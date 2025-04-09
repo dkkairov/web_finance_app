@@ -8,6 +8,7 @@ use App\Http\Requests\Currency\UpdateCurrencyRequest;
 use App\Http\Resources\CurrencyResource;
 use App\Models\Currency;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 class CurrencyController extends Controller
 {
@@ -30,6 +31,10 @@ class CurrencyController extends Controller
      */
     public function store(StoreCurrencyRequest $request)
     {
+        if (!Auth::user()->hasRole('admin')) {
+            return response()->json(['error' => 'Unauthorized'], Response::HTTP_FORBIDDEN);
+        }
+
         $currency = Currency::create($request->validated());
         return (new CurrencyResource($currency))
             ->response()
@@ -52,10 +57,14 @@ class CurrencyController extends Controller
      *
      * @param  \App\Http\Requests\Currency\UpdateCurrencyRequest  $request
      * @param  \App\Models\Currency  $currency
-     * @return CurrencyResource
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(UpdateCurrencyRequest $request, Currency $currency)
     {
+        if (!Auth::user()->hasRole('admin')) {
+            return response()->json(['error' => 'Unauthorized'], Response::HTTP_FORBIDDEN);
+        }
+
         $currency->update($request->validated());
         return new CurrencyResource($currency->fresh());
     }
@@ -68,7 +77,11 @@ class CurrencyController extends Controller
      */
     public function destroy(Currency $currency)
     {
+        if (!Auth::user()->hasRole('admin')) {
+            return response()->json(['error' => 'Unauthorized'], Response::HTTP_FORBIDDEN);
+        }
+
         $currency->delete();
-        return response()->json(null, Response::HTTP_NO_CONTENT);
+        return response()->json(['message' => 'Currency deleted successfully'], 200);
     }
 }

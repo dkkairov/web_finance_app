@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Currency;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class StoreCurrencyRequest extends FormRequest
 {
@@ -11,7 +12,7 @@ class StoreCurrencyRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->check(); // Настройте логику авторизации по мере необходимости
+        return Auth::check() && Auth::user()->hasRole('admin');
     }
 
     /**
