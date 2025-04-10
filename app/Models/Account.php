@@ -13,7 +13,7 @@ class Account extends Model
     use HasFactory, SoftDeletes, LogsActivity;
 
     protected $fillable = [
-        'workspace_id',
+        'team_id',
         'name',
         'balance',
         'currency_id',
@@ -25,9 +25,9 @@ class Account extends Model
         'balance' => 'decimal:2'
     ];
 
-    public function workspace()
+    public function team()
     {
-        return $this->belongsTo(Workspace::class);
+        return $this->belongsTo(Team::class);
     }
 
     public function currency()

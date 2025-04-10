@@ -6,7 +6,7 @@ use App\Http\Controllers\API\CurrencyController;
 use App\Http\Controllers\API\ProjectController;
 use App\Http\Controllers\API\TransactionCategoryController;
 use App\Http\Controllers\API\TransactionController;
-use App\Http\Controllers\API\WorkspaceController;
+use App\Http\Controllers\API\TeamController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -34,8 +34,8 @@ Route::middleware('auth:sanctum')->group(function () {
     // Project CRUD routes
     Route::apiResource('projects', ProjectController::class);
 
-    // Workspace CRUD routes
-    Route::apiResource('workspaces', WorkspaceController::class);
+    // Team CRUD routes
+    Route::apiResource('teams', TeamController::class);
 
     // Currency CRUD routes
     Route::get('/currencies', [CurrencyController::class, 'index']);

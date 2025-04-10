@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\Project;
-use App\Models\Workspace;
+use App\Models\Team;
 
 class ProjectFactory extends Factory
 {
@@ -15,7 +15,7 @@ class ProjectFactory extends Factory
         return [
             'name' => $this->faker->sentence(3),
             'description' => $this->faker->paragraph(),
-            'workspace_id' => Workspace::factory(), // Связываем с рабочим пространством
+            'team_id' => Team::factory(), // Связываем с рабочим пространством
             'is_active' => $this->faker->boolean(), // true = активен, false = архивирован
             'created_at' => now(),
             'updated_at' => now(),

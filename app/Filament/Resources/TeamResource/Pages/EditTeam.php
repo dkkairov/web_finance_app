@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\WorkspaceResource\Pages;
+namespace App\Filament\Resources\TeamResource\Pages;
 
-use App\Filament\Resources\WorkspaceResource;
+use App\Filament\Resources\TeamResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
-class EditWorkspace extends EditRecord
+class EditTeam extends EditRecord
 {
-    protected static string $resource = WorkspaceResource::class;
+    protected static string $resource = TeamResource::class;
 
     protected function getHeaderActions(): array
     {

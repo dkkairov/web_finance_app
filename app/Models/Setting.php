@@ -14,7 +14,7 @@ class Setting extends Model
 
     protected $fillable = [
         'user_id',
-        'workspace_id',
+        'team_id',
         'key',
         'value',
     ];
@@ -35,8 +35,8 @@ class Setting extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function workspace()
+    public function team()
     {
-        return $this->belongsTo(Workspace::class);
+        return $this->belongsTo(Team::class);
     }
 }

@@ -4,12 +4,12 @@ namespace Database\Factories;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Models\Workspace;
+use App\Models\Team;
 use Illuminate\Support\Str;
 
-class WorkspaceFactory extends Factory
+class TeamFactory extends Factory
 {
-    protected $model = Workspace::class;
+    protected $model = Team::class;
 
     public function definition(): array
     {

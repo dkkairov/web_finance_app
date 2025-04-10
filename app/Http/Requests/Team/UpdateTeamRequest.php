@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests\Workspace;
+namespace App\Http\Requests\Team;
 
-use App\Models\Workspace;
+use App\Models\Team;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class UpdateWorkspaceRequest extends FormRequest
+class UpdateTeamRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,7 @@ class UpdateWorkspaceRequest extends FormRequest
      */
     public function rules(): array
     {
-        $workspaceId = $this->route('workspace'); // Получаем строковое значение ID из маршрута
+        $teamId = $this->route('team'); // Получаем строковое значение ID из маршрута
 
         return [
             'name' => [
@@ -42,7 +42,7 @@ class UpdateWorkspaceRequest extends FormRequest
             ],
             'owner_id' => 'sometimes|exists:users,id',
             'is_active' => 'sometimes|boolean',
-            'type' => ['required', 'string', Rule::in([Workspace::TYPE_PERSONAL, Workspace::TYPE_BUSINESS])],
+            'type' => ['required', 'string', Rule::in([Team::TYPE_PERSONAL, Team::TYPE_BUSINESS])],
         ];
     }
 }

@@ -5,7 +5,7 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\Budget;
 use App\Models\User;
-use App\Models\Workspace;
+use App\Models\Team;
 use App\Models\Currency;
 
 class BudgetFactory extends Factory
@@ -16,7 +16,7 @@ class BudgetFactory extends Factory
     {
         return [
             'user_id' => User::factory(), // Создаем пользователя
-            'workspace_id' => Workspace::factory(), // Привязываем к рабочему пространству
+            'team_id' => Team::factory(), // Привязываем к рабочему пространству
             'currency_id' => Currency::factory(), // Валюта бюджета
             'name' => $this->faker->word(), // Название бюджета
             'amount' => $this->faker->randomFloat(2, 100, 10000), // Сумма бюджета

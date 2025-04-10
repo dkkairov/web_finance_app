@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests\Workspace;
+namespace App\Http\Requests\Team;
 
-use App\Models\Workspace;
+use App\Models\Team;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class StoreWorkspaceRequest extends FormRequest
+class StoreTeamRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,7 +28,7 @@ class StoreWorkspaceRequest extends FormRequest
             'slug' => 'required|string|max:255|alpha_dash', // Unique slug, only letters/numbers/hyphen/underscore
             'is_active' => 'sometimes|boolean',
             'owner_id' => 'sometimes|numeric|exists:users,id',
-            'type' => ['required', 'string', Rule::in([Workspace::TYPE_PERSONAL, Workspace::TYPE_BUSINESS])],
+            'type' => ['required', 'string', Rule::in([Team::TYPE_PERSONAL, Team::TYPE_BUSINESS])],
         ];
     }
 

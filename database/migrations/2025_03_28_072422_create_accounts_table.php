@@ -9,7 +9,7 @@ return new class extends Migration {
     {
         Schema::create('accounts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('workspace_id')->constrained()->onDelete('cascade'); // Связь с рабочим пространством
+            $table->foreignId('team_id')->constrained()->onDelete('cascade'); // Связь с рабочим пространством
             $table->string('name'); // Название счёта
             $table->decimal('balance', 18, 2)->default(0); // Баланс
             $table->foreignId('currency_id')->constrained('currencies')->onDelete('cascade'); // Связь с валютой
@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->softDeletes();
 
             // Индексы
-            $table->index(['workspace_id', 'is_active']);
+            $table->index(['team_id', 'is_active']);
         });
     }
 

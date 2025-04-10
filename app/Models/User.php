@@ -58,9 +58,9 @@ class User extends Authenticatable implements FilamentUser
     /**
      * Связь с рабочим пространством, которым пользователь владеет
      */
-    public function ownedWorkspace(): \Illuminate\Database\Eloquent\Relations\HasOne
+    public function ownedTeam(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
-        return $this->hasOne(Workspace::class, 'owner_id');
+        return $this->hasOne(Team::class, 'owner_id');
     }
 
     /**
@@ -79,9 +79,9 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasMany(Membership::class);
     }
 
-    public function workspaces()
+    public function teams()
     {
-        return $this->belongsToMany(Workspace::class, 'memberships')
+        return $this->belongsToMany(Team::class, 'memberships')
             ->withPivot('role')
             ->withTimestamps();
     }

@@ -23,7 +23,7 @@ class AccountResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('workspace_id')
+                Forms\Components\TextInput::make('team_id')
                     ->required()
                     ->numeric(),
                 Forms\Components\TextInput::make('name')
@@ -45,7 +45,7 @@ class AccountResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('workspace_id')
+                Tables\Columns\TextColumn::make('team_id')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('name')

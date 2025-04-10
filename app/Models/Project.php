@@ -13,7 +13,7 @@ class Project extends Model
     use HasFactory, SoftDeletes, LogsActivity;
 
     protected $fillable = [
-        'workspace_id',
+        'team_id',
         'name',
         'description',
         'is_active',
@@ -37,9 +37,9 @@ class Project extends Model
     /**
      * Связь с рабочим пространством
      */
-    public function workspace()
+    public function team()
     {
-        return $this->belongsTo(Workspace::class);
+        return $this->belongsTo(Team::class);
     }
 
     /**

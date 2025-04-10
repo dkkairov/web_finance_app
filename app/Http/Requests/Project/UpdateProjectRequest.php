@@ -13,7 +13,7 @@ class UpdateProjectRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        // Проверка принадлежности проекта (через workspace) делается в контроллере
+        // Проверка принадлежности проекта (через team) делается в контроллере
         // Здесь достаточно проверить, что пользователь авторизован
         return Auth::check();
     }
@@ -36,11 +36,11 @@ class UpdateProjectRequest extends FormRequest
                 'max:255',
                 // Имя должно быть уникально в ЭТОМ ЖЕ воркспейсе, игнорируя текущий проект
                 Rule::unique('projects')
-                    ->where('workspace_id', $project->workspace_id) // Ищем только в текущем воркспейсе
+                    ->where('team_id', $project->team_id) // Ищем только в текущем воркспейсе
                     ->ignore($project->id), // Игнорируем сам проект
             ],
             'description' => 'nullable|string',
-            // 'workspace_id' => 'sometimes|required|...', // НЕ РАЗРЕШАЕМ МЕНЯТЬ ДЛЯ MVP
+            // 'team_id' => 'sometimes|required|...', // НЕ РАЗРЕШАЕМ МЕНЯТЬ ДЛЯ MVP
             'is_active' => 'sometimes|boolean',
         ];
     }

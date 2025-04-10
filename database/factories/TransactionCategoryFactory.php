@@ -15,6 +15,7 @@ class TransactionCategoryFactory extends Factory
             'name' => $this->faker->word(),
             'user_id' => 1,
             'type' => $this->faker->randomElement(['income', 'expense']), // Категория доходов или расходов
+            'icon' => 'home',
             'created_at' => now(),
             'updated_at' => now(),
         ];

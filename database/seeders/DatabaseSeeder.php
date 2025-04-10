@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
         );
         $this->call([
             CurrencySeeder::class,
-            WorkspaceSeeder::class,
+            TeamSeeder::class,
             UserSeeder::class,
             TransactionCategorySeeder::class,
             ProjectSeeder::class,

@@ -9,7 +9,7 @@ return new class extends Migration {
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('workspace_id')->constrained()->onDelete('cascade'); // Рабочее пространство
+            $table->foreignId('team_id')->constrained()->onDelete('cascade'); // Рабочее пространство
             $table->string('name');
             $table->text('description')->nullable();
             $table->boolean('is_active')->default(true);

@@ -18,7 +18,7 @@ class TransactionCategorySeeder extends Seeder
         ];
 
         foreach ($categories as $category) {
-            TransactionCategory::firstOrCreate(['name' => $category['name']], ['type' => $category['type']], ['user_id' => $category['user_id']]);
+            TransactionCategory::firstOrCreate(['name' => $category['name']], ['type' => $category['type']], ['icon' => 'home']);
         }
     }
 }

@@ -10,13 +10,13 @@ return new class extends Migration {
         Schema::create('memberships', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('workspace_id')->constrained()->onDelete('cascade');
+            $table->foreignId('team_id')->constrained()->onDelete('cascade');
             $table->enum('role', ['owner', 'admin', 'member'])->default('member');
             $table->foreignId('invited_by')->nullable()->constrained('users')->onDelete('set null');
             $table->timestamps();
             $table->softDeletes();
 
-            $table->unique(['user_id', 'workspace_id']);
+            $table->unique(['user_id', 'team_id']);
         });
     }
 

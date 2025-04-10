@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
-class Workspace extends Model
+class Team extends Model
 {
     use HasFactory, SoftDeletes, LogsActivity;
 
@@ -32,7 +32,7 @@ class Workspace extends Model
      */
     protected static $logAttributes = ['*']; // Логируем ВСЕ поля
     protected static $logOnlyDirty = true; // Логируем только изменения
-    protected static $logName = 'workspace'; // Имя логов
+    protected static $logName = 'team'; // Имя логов
 
     /**
      * Определяет, какие события логировать
@@ -99,7 +99,7 @@ class Workspace extends Model
     {
         return LogOptions::defaults()
             ->logAll() // Логировать все изменения
-            ->useLogName('workspaces') // Имя лога
+            ->useLogName('teams') // Имя лога
             ->logOnlyDirty(); // Логировать только изменённые поля
     }
 }

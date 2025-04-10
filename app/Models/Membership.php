@@ -14,7 +14,7 @@ class Membership extends Model
 
     protected $fillable = [
         'user_id',
-        'workspace_id',
+        'team_id',
         'role',
         'invited_by',
     ];
@@ -36,9 +36,9 @@ class Membership extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function workspace()
+    public function team()
     {
-        return $this->belongsTo(Workspace::class);
+        return $this->belongsTo(Team::class);
     }
 
     public function inviter()

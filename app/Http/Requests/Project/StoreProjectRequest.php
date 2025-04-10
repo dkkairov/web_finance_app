@@ -14,7 +14,7 @@ class StoreProjectRequest extends FormRequest
     public function authorize(): bool
     {
         // Просто проверяем, что пользователь авторизован
-        // Проверка доступа к workspace_id будет в правилах валидации
+        // Проверка доступа к team_id будет в правилах валидации
         return Auth::check();
     }
 
@@ -26,7 +26,7 @@ class StoreProjectRequest extends FormRequest
     public function rules(): array
     {
         // Получаем ID доступных пользователю воркспейсов
-        $userWorkspaceIds = Auth::user()->workspaces()->pluck('workspaces.id')->toArray();
+        $userTeamIds = Auth::user()->teams()->pluck('teams.id')->toArray();
 
         return [
             'name' => [
@@ -35,11 +35,11 @@ class StoreProjectRequest extends FormRequest
                 'max:255',
             ],
             'description' => 'nullable|string',
-            'workspace_id' => [
+            'team_id' => [
                 'required',
                 'integer',
-                'exists:workspaces,id', // Убедимся, что воркспейс существует
-                Rule::in($userWorkspaceIds) // Проверяем, что пользователь имеет доступ к этому воркспейсу
+                'exists:teams,id', // Убедимся, что воркспейс существует
+                Rule::in($userTeamIds) // Проверяем, что пользователь имеет доступ к этому воркспейсу
             ],
             'is_active' => 'sometimes|boolean',
         ];
@@ -53,7 +53,7 @@ class StoreProjectRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'workspace_id.in' => 'You do not have access to the selected workspace.',
+            'team_id.in' => 'You do not have access to the selected team.',
         ];
     }
 }

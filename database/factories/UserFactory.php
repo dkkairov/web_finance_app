@@ -5,7 +5,7 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use App\Models\User;
-use App\Models\Workspace;
+use App\Models\Team;
 use App\Models\Currency;
 
 class UserFactory extends Factory

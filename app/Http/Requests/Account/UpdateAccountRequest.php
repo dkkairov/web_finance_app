@@ -30,7 +30,7 @@ class UpdateAccountRequest extends FormRequest
             'balance' => 'sometimes|required|numeric',
             // Проверяем, что ID валюты и воркспейса существуют в соответствующих таблицах
             'currency_id' => 'sometimes|required|exists:currencies,id',
-            'workspace_id' => 'sometimes|required|exists:workspaces,id', // Считаем обязательным, если нет - убери 'required'
+            'team_id' => 'sometimes|required|exists:teams,id', // Считаем обязательным, если нет - убери 'required'
             'is_active' => 'sometimes|boolean',
         ];
     }

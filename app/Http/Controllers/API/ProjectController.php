@@ -23,11 +23,10 @@ class ProjectController extends Controller
     {
         $user = Auth::user();
         // Получаем ID воркспейсов, к которым пользователь имеет доступ
-        // Замени 'workspaces' на имя реальной связи в модели User, если оно другое
-        $accessibleWorkspaceIds = $user->workspaces()->pluck('workspaces.id');
-//        dd($accessibleWorkspaceIds);
+        // Замени 'teams' на имя реальной связи в модели User, если оно другое
+        $accessibleTeamIds = $user->teams()->pluck('teams.id');
 
-        $projects = Project::whereIn('workspace_id', $accessibleWorkspaceIds)->get();
+        $projects = Project::whereIn('team_id', $accessibleTeamIds)->get();
 //        $projects = Project::all();
 
 
@@ -39,7 +38,7 @@ class ProjectController extends Controller
      */
     public function store(StoreProjectRequest $request)
     {
-        // Валидация (включая проверку доступа к workspace_id) происходит в StoreProjectRequest
+        // Валидация (включая проверку доступа к team_id) происходит в StoreProjectRequest
         $data = $request->validated();
 
         // Не нужно добавлять user_id, т.к. его нет в модели Project
@@ -56,8 +55,8 @@ class ProjectController extends Controller
     public function show(Project $project) // Route Model Binding
     {
         // Проверка, имеет ли пользователь доступ к воркспейсу проекта
-        if (!Auth::user()->workspaces()->where('workspaces.id', $project->workspace_id)->exists()) {
-            return response()->json(['error' => 'Access to this project workspace denied'], Response::HTTP_FORBIDDEN);
+        if (!Auth::user()->teams()->where('teams.id', $project->team_id)->exists()) {
+            return response()->json(['error' => 'Access to this project teams denied'], Response::HTTP_FORBIDDEN);
         }
 
         return new ProjectResource($project);
@@ -69,8 +68,8 @@ class ProjectController extends Controller
     public function update(UpdateProjectRequest $request, Project $project) // Route Model Binding
     {
         // Проверка, имеет ли пользователь доступ к воркспейсу проекта
-        if (!Auth::user()->workspaces()->where('workspaces.id', $project->workspace_id)->exists()) {
-            return response()->json(['error' => 'Access to this project workspace denied'], Response::HTTP_FORBIDDEN);
+        if (!Auth::user()->teams()->where('teams.id', $project->team_id)->exists()) {
+            return response()->json(['error' => 'Access to this project team denied'], Response::HTTP_FORBIDDEN);
         }
 
         // Валидация происходит в UpdateProjectRequest
@@ -85,8 +84,8 @@ class ProjectController extends Controller
     public function destroy(Project $project) // Route Model Binding
     {
         // Проверка, имеет ли пользователь доступ к воркспейсу проекта
-        if (!Auth::user()->workspaces()->where('workspaces.id', $project->workspace_id)->exists()) {
-            return response()->json(['error' => 'Access to this project workspace denied'], Response::HTTP_FORBIDDEN);
+        if (!Auth::user()->teams()->where('teams.id', $project->team_id)->exists()) {
+            return response()->json(['error' => 'Access to this project team denied'], Response::HTTP_FORBIDDEN);
         }
 
         // Дополнительная проверка: возможно, не удалять проект с транзакциями?

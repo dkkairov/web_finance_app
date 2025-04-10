@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\Limit;
 use App\Models\User;
 use App\Models\TransactionCategory;
-use App\Models\Workspace;
+use App\Models\Team;
 
 class LimitFactory extends Factory
 {
