@@ -38,6 +38,7 @@ class UpdateTransactionCategoryRequest extends FormRequest
                     ->ignore($categoryId),
             ],
             // 'is_active' => 'sometimes|boolean', // <--- УБРАЛИ ЭТУ СТРОКУ
+            'team_id' => 'sometimes|numeric|exists:teams,id',
             'type' => 'sometimes|string',
             'icon' => 'sometimes|string',
             // Добавь правила для других полей, если они появятся

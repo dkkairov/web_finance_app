@@ -70,10 +70,6 @@ class User extends Authenticatable implements FilamentUser
     {
         return $this->belongsTo(Currency::class, 'preferred_currency_id');
     }
-    public function transactionCategories(): \Illuminate\Database\Eloquent\Relations\HasMany
-    {
-        return $this->hasMany(TransactionCategory::class);
-    }
     public function memberships(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Membership::class);

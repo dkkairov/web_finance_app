@@ -12,7 +12,7 @@ class TransactionCategory extends Model
 {
     use HasFactory, SoftDeletes, LogsActivity;
 
-    protected $fillable = ['name', 'user_id', 'type', 'icon'];
+    protected $fillable = ['name', 'team_id', 'type', 'icon'];
 
     /**
      * Конфигурация логирования
@@ -26,9 +26,9 @@ class TransactionCategory extends Model
     }
 
     /**
-     * Связь с пользователем (владелец категории)
+     * Связь с командой
      */
-    public function user()
+    public function team()
     {
         return $this->belongsTo(User::class);
     }

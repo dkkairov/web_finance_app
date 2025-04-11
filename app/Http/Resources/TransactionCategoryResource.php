@@ -16,7 +16,7 @@ class TransactionCategoryResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'userId' => (int) $this->user_id, // По-прежнему опционально
+            'teamId' => (int) $this->team_id, // По-прежнему опционально
             'name' => $this->name,
             // 'isActive' => (bool) $this->is_active, // <--- УБРАЛИ ЭТУ СТРОКУ
             'icon' => (string) $this->icon,

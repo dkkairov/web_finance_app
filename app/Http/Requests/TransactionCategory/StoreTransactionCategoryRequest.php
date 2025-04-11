@@ -34,7 +34,7 @@ class StoreTransactionCategoryRequest extends FormRequest
                 }),
             ],
             // 'is_active' => 'sometimes|boolean', // <--- УБРАЛИ ЭТУ СТРОКУ
-//            'user_id' => 'sometimes|numeric|exists:users,id',
+            'team_id' => 'sometimes|numeric|exists:teams,id',
             'type' => 'sometimes|string',
             'icon' => 'sometimes|string',
             // Добавь правила для других полей, если они появятся

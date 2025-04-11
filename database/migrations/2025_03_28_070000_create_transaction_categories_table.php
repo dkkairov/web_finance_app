@@ -10,7 +10,7 @@ return new class extends Migration {
         Schema::create('transaction_categories', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('team_id')->nullable()->constrained()->onDelete('cascade');
             $table->enum('type', ['income', 'expense']); // Поле 'type'
             $table->string('icon')->nullable();
             $table->timestamps();

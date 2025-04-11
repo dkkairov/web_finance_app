@@ -3,22 +3,25 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\TransactionCategory\StoreTransactionCategoryRequest; // Создадим далее
-use App\Http\Requests\TransactionCategory\UpdateTransactionCategoryRequest; // Создадим далее
-use App\Http\Resources\TransactionCategoryResource;                      // Создадим далее
+use App\Http\Requests\TransactionCategory\StoreTransactionCategoryRequest;
+use App\Http\Requests\TransactionCategory\UpdateTransactionCategoryRequest;
+use App\Http\Resources\TransactionCategoryResource;
 use App\Models\TransactionCategory;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 class TransactionCategoryController extends Controller
 {
     /**
-     * Display a listing of the user's transaction categories.
+     * Display a listing of the team's transaction categories.
      */
     public function index()
     {
-        // Если категории глобальные, убери ->where(...)
+        // Получаем ID текущей команды пользователя
+        $teamId = Auth::user()->current_team_id;
 
-        $categories = TransactionCategory::where('transaction_categories.user_id', auth()->id())->get();
+        // Получаем категории, принадлежащие команде
+        $categories = TransactionCategory::where('transaction_categories.team_id', $teamId)->get();
 
         return TransactionCategoryResource::collection($categories);
     }
@@ -29,7 +32,9 @@ class TransactionCategoryController extends Controller
     public function store(StoreTransactionCategoryRequest $request)
     {
         $data = $request->validated();
-        $data['user_id'] = auth()->id(); // Убери эту строку, если категории глобальные
+
+        // Получаем ID текущей команды пользователя и добавляем его в данные
+        $data['team_id'] = Auth::user()->current_team_id;
 
         $category = TransactionCategory::create($data);
 
@@ -41,11 +46,13 @@ class TransactionCategoryController extends Controller
     /**
      * Display the specified transaction category.
      */
-    public function show(TransactionCategory $transactionCategory) // Route Model Binding
+    public function show(TransactionCategory $transactionCategory)
     {
-        // Проверка принадлежности категории пользователю
-        // Убери эту проверку, если категории глобальные
-        if ($transactionCategory->user_id !== auth()->id()) {
+        // Получаем ID текущей команды пользователя
+        $teamId = Auth::user()->current_team_id;
+
+        // Проверка принадлежности категории команде
+        if ($transactionCategory->team_id !== $teamId) {
             return response()->json(['error' => 'Unauthorized'], Response::HTTP_FORBIDDEN);
         }
 
@@ -55,11 +62,13 @@ class TransactionCategoryController extends Controller
     /**
      * Update the specified transaction category in storage.
      */
-    public function update(UpdateTransactionCategoryRequest $request, TransactionCategory $transactionCategory) // Route Model Binding
+    public function update(UpdateTransactionCategoryRequest $request, TransactionCategory $transactionCategory)
     {
-        // Проверка принадлежности категории пользователю
-        // Убери эту проверку, если категории глобальные
-        if ($transactionCategory->user_id !== auth()->id()) {
+        // Получаем ID текущей команды пользователя
+        $teamId = Auth::user()->current_team_id;
+
+        // Проверка принадлежности категории команде
+        if ($transactionCategory->team_id !== $teamId) {
             return response()->json(['error' => 'Unauthorized'], Response::HTTP_FORBIDDEN);
         }
 
@@ -71,20 +80,22 @@ class TransactionCategoryController extends Controller
     /**
      * Remove the specified transaction category from storage.
      */
-    public function destroy(TransactionCategory $transactionCategory) // Route Model Binding
+    public function destroy(TransactionCategory $transactionCategory)
     {
-        // Проверка принадлежности категории пользователю
-        // Убери эту проверку, если категории глобальные
-        if ($transactionCategory->user_id !== auth()->id()) {
+        // Получаем ID текущей команды пользователя
+        $teamId = Auth::user()->current_team_id;
+
+        // Проверка принадлежности категории команде
+        if ($transactionCategory->team_id !== $teamId) {
             return response()->json(['error' => 'Unauthorized'], Response::HTTP_FORBIDDEN);
         }
 
         // Дополнительная проверка: возможно, не стоит удалять категорию, если у нее есть транзакции?
         // if ($transactionCategory->transactions()->exists()) {
-        //     return response()->json(['error' => 'Cannot delete category with existing transactions'], Response::HTTP_CONFLICT); // 409 Conflict
+        //     return response()->json(['error' => 'Cannot delete category with existing transactions'], Response::HTTP_CONFLICT);
         // }
 
-        $transactionCategory->delete(); // Используется SoftDeletes
+        $transactionCategory->delete();
 
         return response()->json(['message' => 'Transaction category deleted successfully'], 200);
     }

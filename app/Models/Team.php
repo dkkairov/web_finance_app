@@ -94,7 +94,10 @@ class Team extends Model
     {
         return $this->hasMany(Limit::class);
     }
-
+    public function transactionCategories(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(TransactionCategory::class);
+    }
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
