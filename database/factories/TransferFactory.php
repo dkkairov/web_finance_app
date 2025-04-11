@@ -21,7 +21,7 @@ class TransferFactory extends Factory
             'from_account_id' => Account::factory(), // Исходящий счет
             'to_account_id' => Account::factory(), // Входящий счет
             'amount' => $amount,
-            'currency_id' => Currency::factory(), // Валюта перевода
+            'currency_id' => $this->faker->numberBetween(1,29), // Создаст новую валюту
             'exchange_rate' => $this->faker->randomFloat(4, 0.8, 1.2), // Курс обмена (если разные валюты)
             'converted_amount' => $amount * $this->faker->randomFloat(4, 0.8, 1.2), // Сумма после конвертации
             'date' => $this->faker->dateTimeBetween('-1 year', 'now'),

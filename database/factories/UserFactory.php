@@ -20,7 +20,7 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => bcrypt('password'), // Пароль по умолчанию
             'remember_token' => Str::random(10),
-            'preferred_currency_id' => Currency::factory(), // Создаст новую валюту
+            'preferred_currency_id' => $this->faker->numberBetween(1,29), // Создаст новую валюту
             'created_at' => now(),
             'updated_at' => now(),
         ];

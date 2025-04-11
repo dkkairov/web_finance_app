@@ -12,7 +12,7 @@ return new class extends Migration {
             $table->string('name');
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
             $table->enum('type', ['income', 'expense']); // Поле 'type'
-            $table->string('icon');
+            $table->string('icon')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

@@ -17,7 +17,7 @@ class BudgetFactory extends Factory
         return [
             'user_id' => User::factory(), // Создаем пользователя
             'team_id' => Team::factory(), // Привязываем к рабочему пространству
-            'currency_id' => Currency::factory(), // Валюта бюджета
+            'currency_id' => $this->faker->numberBetween(1,29), // Создаст новую валюту
             'name' => $this->faker->word(), // Название бюджета
             'amount' => $this->faker->randomFloat(2, 100, 10000), // Сумма бюджета
             'start_date' => $this->faker->dateTimeBetween('-1 year', 'now'),

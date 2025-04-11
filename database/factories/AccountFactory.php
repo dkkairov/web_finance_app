@@ -18,7 +18,7 @@ class AccountFactory extends Factory
             'name' => $this->faker->word() . ' Account',
             'balance' => $this->faker->randomFloat(2, 0, 10000),
             'team_id' => Team::factory(), // Создаст новое рабочее пространство
-            'currency_id' => Currency::factory(), // Создаст новую валюту
+            'currency_id' => $this->faker->numberBetween(1,29), // Создаст новую валюту
             'created_at' => now(),
             'updated_at' => now(),
         ];

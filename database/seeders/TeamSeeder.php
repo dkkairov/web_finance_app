@@ -10,12 +10,6 @@ class TeamSeeder extends Seeder
 {
     public function run(): void
     {
-        $owner = User::first() ?? User::factory()->create([
-
-        ]); // Создаём владельца один раз
-
-        Team::factory()->count(10)->create([
-            'owner_id' => $owner->id, // Передаём owner_id, чтобы избежать рекурсии
-        ]);
+        Team::factory()->count(3)->create();
     }
 }

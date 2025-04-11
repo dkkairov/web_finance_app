@@ -17,8 +17,8 @@ class TeamFactory extends Factory
 
         return [
             'name' => $name,
-            'slug' => Str::slug($name), // Генерируем slug
-            'owner_id' => User::inRandomOrder()->first()?->id ?? User::factory()->create()->id, // Создаем владельца (обязательно!)
+            'slug' => Str::slug($name).' team', // Генерируем slug
+            'owner_id' => 1,
             'type' => 'personal',
             'created_at' => now(),
             'updated_at' => now(),

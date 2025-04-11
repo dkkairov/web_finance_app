@@ -14,7 +14,7 @@ class MembershipFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => User::factory(), // Привязываем к пользователю
+            'user_id' => 1,
             'team_id' => Team::factory(), // Привязываем к рабочему пространству
             'role' => $this->faker->randomElement(['owner', 'admin', 'member']), // Роль участника
             'created_at' => now(),

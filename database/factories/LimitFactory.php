@@ -20,7 +20,7 @@ class LimitFactory extends Factory
             'transaction_category_id' => TransactionCategory::factory(), // Привязываем к категории транзакций
             'amount' => $this->faker->randomFloat(2, 100, 10000), // Лимит по категории
             'is_active' => $this->faker->boolean(), // true = активен, false = завершен
-            'currency_id' => Currency::factory(),
+            'currency_id' => $this->faker->numberBetween(1,29), // Создаст новую валюту
             'created_at' => now(),
             'updated_at' => now(),
         ];

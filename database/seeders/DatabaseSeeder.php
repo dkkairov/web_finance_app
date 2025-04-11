@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
         // Создаем админа, если его нет
         User::updateOrCreate(
             [
-                'email' => 'admin@example.com',
+                'email' => 'a@a.kz',
                 'name' => 'admin',
                 'password' => Hash::make('123'), // ← Можно задать другой пароль
                 'email_verified_at' => now(),
